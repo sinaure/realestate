@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Crypto Timescaledb",
+            "Group": "Server Group 1",
+            "Port": 5432,
+            "Username": "realestate",
+            "Host": "pg",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "realestate"
+        }
+     }
+}

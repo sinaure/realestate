@@ -1,0 +1,34 @@
+version: "3"
+services:
+  pg:
+    image: timescale/timescaledb-postgis:latest-pg13
+    container_name: re-postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/postgresql/data/pg_data_timescale
+      - ./data:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: realestate
+      POSTGRES_USER: realestate
+      POSTGRES_PORT: 5432
+      PGDATA: /var/lib/postgresql/data/pg_data_timescale
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: re-pgadmin
+    ports:
+      - 8901:80
+    volumes:
+      - pgvol:/var/lib/pgadmin
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
+    depends_on:
+      - pg
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=test@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=test1234
+  
+volumes:
+  pgvol:
+ 
