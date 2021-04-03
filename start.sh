@@ -5,4 +5,4 @@ aws s3 cp --endpoint-url=https://gateway.tardigradeshare.io s3://realestate/dvf_
 aws s3 cp --endpoint-url=https://gateway.tardigradeshare.io s3://realestate/R093_Paca.sql ./data/2-R093_Paca.sql
 aws s3 cp --endpoint-url=https://gateway.tardigradeshare.io s3://realestate/Insee-codes-France.sql ./data/3-import-codes.sql
 
-docker-compose up
+docker-compose up -d
