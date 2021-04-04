@@ -1,6 +1,6 @@
 # Prerequisites: docker - docker-compose /python
 ```
-pip install awscli
+sudo apt  install awscli
 ```
 
 # Run
