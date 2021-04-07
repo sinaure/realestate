@@ -2,5 +2,7 @@
 .pydevproject
 *.key
 __pycache__
-data
+data/1-dvf_initial.sql
+data/2-R093_Paca.sql
+data/3-import-codes.sql
 .env
