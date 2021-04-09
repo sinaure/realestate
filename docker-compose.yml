@@ -1,8 +1,20 @@
 version: "3"
 services:
+  s3client:
+    build:
+      context: ./
+      dockerfile: docker/s3client/Dockerfile
+    environment:
+      REGION: $REGION
+    volumes:
+      - ./data:/usr/local/share/data
   pg:
-    image: timescale/timescaledb-postgis:latest-pg13
+    build:
+      context: ./
+      dockerfile: docker/postgres/Dockerfile
     container_name: re-postgres
+    depends_on: 
+      - s3client
     ports:
       - 5432:5432
     volumes:

@@ -1,16 +1,13 @@
-# Prerequisites: docker - docker-compose /python
-```
-sudo apt  install awscli
-```
+# Prerequisites: docker - docker-compose
 
 # Run
 ```
-./start.sh
+docker-compose up
 ```
 
 # Stop
 ```
-./stop.sh
+docker-compose down --remove-orphans
 ```
 
 # Scope
