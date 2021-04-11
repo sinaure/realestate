@@ -1,8 +1,8 @@
 {
     "Servers": {
         "1": {
-            "Name": "Crypto Timescaledb",
-            "Group": "Server Group 1",
+            "Name": "RealEstate Postgis",
+            "Group": "RealEstate",
             "Port": 5432,
             "Username": "realestate",
             "Host": "pg",

@@ -337,6 +337,6 @@ _startup() {
 }
 
 if ! _is_sourced; then
-    _startup "/docker-entrypoint-initdb.d/3-import-codes.sql"s
+    _startup "/docker-entrypoint-initdb.d/3-import-codes.sql"
 	_main "$@"
 fi
