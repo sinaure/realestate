@@ -31,23 +31,26 @@ SELECT nom,
 FROM mutations_stats
 GROUP BY nom,libtypbien, bucket ORDER BY bucket DESC, nom ASC, libtypbien DESC;
 
-CREATE TABLE mutations_trend AS (SELECT bucket, nom, libtypbien,sum_val_fonc, total, sum_sterr, sum_sbati,
-       sum_val_fonc-lag(sum_val_fonc) over (partition by nom,libtypbien order by bucket)  as increase_val,
+CREATE TABLE mutations_trend AS (SELECT bucket, nom, libtypbien, ROUND(sum_val_fonc,1), total, sum_sterr, sum_sbati,
+       ROUND(sum_val_fonc-lag(sum_val_fonc) over (partition by nom,libtypbien order by bucket) ,1)  as increase_val,
 	   total-lag(total) over (partition by nom,libtypbien order by bucket)  as increase_tx
 from mutations_stats_summary_yearly GROUP BY bucket, nom,libtypbien, sum_val_fonc, total, sum_sterr, sum_sbati ORDER BY bucket DESC,nom ASC, increase_val ASC, increase_tx ASC);
 
-CREATE TABLE mutations_trend_villa AS (SELECT anneemut, nom, insee_cod, sum_val_fonc, total, sum_sterr, sum_sbati, longitude, latitude,
-       sum_val_fonc-lag(sum_val_fonc) over (partition by nom order by anneemut)  as increase_val,
-	   total-lag(total) over (partition by nom order by anneemut)  as increase_tx
-from mutations_stats where libtypbien='UNE MAISON' GROUP BY anneemut, nom, insee_cod, sum_val_fonc, total, sum_sterr, sum_sbati, longitude, latitude ORDER BY anneemut DESC,increase_val ASC, increase_tx ASC);
+select  c1.nom as nom,
+        m1.l_codinsee,
+        m1.anneemut,
+        m1.valeurfonc,
+		m1.libtypbien,
+		m1.sterr as sterr,
+        ST_X(ST_Transform(ST_Centroid(m1.geomparmut), 4326)) as long,
+		ST_Y(ST_Transform(ST_Centroid(m1.geomparmut), 4326)) as lat, 
+		ST_Distance(
+		  ST_Transform(ST_SetSRID(ST_MakePoint(6.797508148628871, 43.58494915673818),4326),3857), 
+		  ST_Transform(ST_Centroid(m1.geomparmut), 3857))/1000 as distance_km
+		from dvf.mutation m1 JOIN public."communes-20210101" c1 ON m1.l_codinsee[1] = c1.insee
+		and anneemut = 2020
+		and sterr >10000
+		ORDER BY distance_km, anneemut
+		limit 1000;
 
-CREATE TABLE mutations_trend_land AS (SELECT anneemut, nom, insee_cod, sum_val_fonc, total, sum_sterr, sum_sbati, longitude, latitude,
-       sum_val_fonc-lag(sum_val_fonc) over (partition by nom order by anneemut)  as increase_val,
-	   total-lag(total) over (partition by nom order by anneemut)  as increase_tx
-from mutations_stats where libtypbien like '%TERRAIN%' GROUP BY anneemut, nom, insee_cod, sum_val_fonc, total, sum_sterr, sum_sbati, longitude, latitude ORDER BY anneemut DESC,increase_val ASC, increase_tx ASC);
-
-CREATE TABLE mutations_trend_apt AS (SELECT anneemut, nom, insee_cod, sum_val_fonc, total, sum_sterr, sum_sbati, longitude, latitude,
-       sum_val_fonc-lag(sum_val_fonc) over (partition by nom order by anneemut)  as increase_val,
-	   total-lag(total) over (partition by nom order by anneemut)  as increase_tx
-from mutations_stats where libtypbien='UN APPARTEMENT' GROUP BY anneemut, nom, insee_cod, sum_val_fonc, total, sum_sterr, sum_sbati, longitude, latitude ORDER BY anneemut DESC,increase_val ASC, increase_tx ASC);
 
