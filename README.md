@@ -12,7 +12,7 @@ docker-compose down --remove-orphans
 
 # Scope
 
-retrive data from Cerema (http://doc-datafoncier.cerema.fr)
+retrive data from Cerema (https://cerema.app.box.com/v/dvfplus-opendata)
 fill data in db
 retrive stats and give sense to data
 
